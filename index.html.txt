@@ -1,0 +1,1442 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
+    <title>ThanhHai — 4 REALMS</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Orbitron:wght@400;600;700;900&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            background: #0a0e1a;
+            font-family: 'Inter', sans-serif;
+            color: #f8fafc;
+            min-height: 100vh;
+            padding: 16px;
+            overflow-x: hidden;
+        }
+
+        #universe {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%);
+            overflow: hidden;
+        }
+        .star {
+            position: absolute;
+            background: #fff;
+            border-radius: 50%;
+            animation: twinkle var(--d, 3s) infinite ease-in-out;
+        }
+        @keyframes twinkle {
+            0%,
+            100% {
+                opacity: 0.15;
+            }
+            50% {
+                opacity: 1;
+            }
+        }
+        .shooting-star {
+            position: absolute;
+            width: 3px;
+            height: 80px;
+            background: linear-gradient(to bottom, #fff, transparent);
+            transform: rotate(-35deg);
+            animation: fall var(--s, 4s) linear infinite;
+            opacity: 0;
+            filter: drop-shadow(0 0 6px #00e5ff);
+            left: var(--x, 50%);
+            top: var(--y, -10px);
+        }
+        @keyframes fall {
+            0% {
+                opacity: 0;
+                transform: translate(0, 0) rotate(-35deg);
+            }
+            10% {
+                opacity: 0.9;
+            }
+            60% {
+                transform: translate(-250px, 400px) rotate(-35deg);
+                opacity: 0;
+            }
+            100% {
+                opacity: 0;
+            }
+        }
+        .nebula {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(120px);
+            pointer-events: none;
+            z-index: -1;
+        }
+        .nebula-1 {
+            width: 500px;
+            height: 500px;
+            top: -10%;
+            right: -10%;
+            background: radial-gradient(circle, rgba(100, 50, 255, 0.10), transparent);
+        }
+        .nebula-2 {
+            width: 400px;
+            height: 400px;
+            bottom: -10%;
+            left: -10%;
+            background: radial-gradient(circle, rgba(255, 50, 100, 0.08), transparent);
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 20px;
+            background: rgba(10, 14, 26, 0.85);
+            backdrop-filter: blur(12px);
+            border-bottom: 2px solid #00e5ff;
+            box-shadow: 0 0 20px rgba(0, 229, 255, 0.35);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            flex-wrap: wrap;
+            gap: 10px;
+            border-radius: 0 0 16px 16px;
+        }
+        .logo {
+            font-size: 1.3rem;
+            font-weight: 900;
+            font-family: 'Orbitron', sans-serif;
+            background: linear-gradient(135deg, #00d4ff, #7b2ffc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .logo span {
+            font-weight: 400;
+            font-size: 0.7rem;
+            -webkit-text-fill-color: #94a3b8;
+            margin-left: 4px;
+        }
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        .xp-display {
+            background: rgba(255, 215, 0, 0.1);
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            border-radius: 10px;
+            padding: 4px 14px;
+            font-weight: 700;
+            font-size: 12px;
+            color: #ffd700;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .level-badge {
+            font-size: 12px;
+            color: #94a3b8;
+            font-weight: 600;
+        }
+        .level-badge span {
+            color: #00e5ff;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 32px 16px 24px;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            margin-bottom: 24px;
+        }
+        .hero .sub-top {
+            font-size: 13px;
+            color: #94a3b8;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+        .hero h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 32px;
+            font-weight: 900;
+            background: linear-gradient(135deg, #00d4ff, #7b2ffc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin: 6px 0 10px;
+            line-height: 1.2;
+        }
+        .hero .desc {
+            font-size: 14px;
+            color: #94a3b8;
+            max-width: 560px;
+            margin: 0 auto 16px;
+            line-height: 1.6;
+        }
+        .hero .btn-path {
+            padding: 10px 32px;
+            border: none;
+            border-radius: 30px;
+            background: linear-gradient(135deg, #00d4ff, #7b2ffc);
+            color: #0a0e1a;
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            transition: 0.2s;
+        }
+        .hero .btn-path:hover {
+            transform: scale(1.03);
+            box-shadow: 0 0 30px rgba(0, 212, 255, 0.3);
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            font-family: 'Orbitron', sans-serif;
+            color: #f8fafc;
+        }
+        .section-title .highlight {
+            color: #00e5ff;
+        }
+
+        .realms-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+        .realm-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(12px);
+            border-radius: 16px;
+            padding: 20px 20px 18px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            transition: 0.3s;
+            cursor: pointer;
+        }
+        .realm-card:hover {
+            border-color: rgba(0, 229, 255, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+        }
+        .realm-card .top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2px;
+        }
+        .realm-card .top .icon {
+            font-size: 28px;
+        }
+        .realm-card .top .level-tag {
+            font-size: 11px;
+            font-weight: 700;
+            color: #00e5ff;
+            background: rgba(0, 229, 255, 0.1);
+            padding: 2px 10px;
+            border-radius: 20px;
+        }
+        .realm-card .name {
+            font-size: 18px;
+            font-weight: 700;
+            font-family: 'Orbitron', sans-serif;
+            margin-bottom: 2px;
+        }
+        .realm-card .desc {
+            font-size: 12px;
+            color: #94a3b8;
+            margin-bottom: 10px;
+            line-height: 1.4;
+        }
+        .realm-card .progress-text {
+            font-size: 11px;
+            color: #94a3b8;
+            font-weight: 600;
+        }
+        .realm-card .bar {
+            height: 4px;
+            background: rgba(255, 255, 255, 0.06);
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 4px 0 12px;
+        }
+        .realm-card .bar .fill {
+            height: 100%;
+            border-radius: 4px;
+            background: linear-gradient(90deg, #00e5ff, #7b2ffc);
+            transition: width 0.5s;
+            width: 0%;
+        }
+        .realm-card .btn-enter {
+            width: 100%;
+            padding: 8px 0;
+            border: none;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            color: #f8fafc;
+            font-weight: 700;
+            font-size: 12px;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            transition: 0.2s;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+        .realm-card:hover .btn-enter {
+            background: linear-gradient(135deg, #00d4ff, #7b2ffc);
+            color: #0a0e1a;
+            border-color: transparent;
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.2);
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
+            margin-top: 8px;
+        }
+        .feature-item {
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 12px;
+            padding: 14px 16px;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            text-align: center;
+        }
+        .feature-item .icon {
+            font-size: 24px;
+            color: #00e5ff;
+            margin-bottom: 4px;
+        }
+        .feature-item .text {
+            font-size: 12px;
+            color: #94a3b8;
+            line-height: 1.4;
+        }
+
+        /* ===== LESSON VIEW ===== */
+        .lesson-view {
+            display: none;
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(12px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            padding: 20px;
+        }
+        .lesson-view.active {
+            display: block;
+        }
+
+        .lesson-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .lesson-header .back {
+            color: #94a3b8;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .lesson-header .back:hover {
+            color: #fff;
+        }
+        .lesson-header .title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 17px;
+        }
+        .lesson-header .badge {
+            background: rgba(0, 229, 255, 0.1);
+            border: 1px solid rgba(0, 229, 255, 0.2);
+            border-radius: 10px;
+            padding: 3px 12px;
+            font-size: 11px;
+            color: #00e5ff;
+        }
+
+        .status-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 14px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 12px;
+            margin-bottom: 14px;
+            font-size: 13px;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .status-bar .status-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        .status-bar .status-left .on {
+            color: #10b981;
+            font-weight: 700;
+        }
+        .status-bar .match {
+            color: #94a3b8;
+        }
+        .status-bar .match .num {
+            color: #ffd700;
+            font-weight: 700;
+        }
+
+        .lesson-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+        @media (max-width: 700px) {
+            .lesson-content {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .left-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .right-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .story-box {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 14px;
+            padding: 14px 16px;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+        }
+        .story-box .label {
+            font-size: 11px;
+            font-weight: 700;
+            color: #ffd700;
+            margin-bottom: 4px;
+        }
+        .story-box .content {
+            font-size: 13px;
+            color: #ccd6f6;
+            line-height: 1.6;
+        }
+
+        .explain-box {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 14px;
+            padding: 14px 16px;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+        }
+        .explain-box .label {
+            font-size: 11px;
+            font-weight: 700;
+            color: #00e5ff;
+            margin-bottom: 4px;
+        }
+        .explain-box .step {
+            font-size: 12px;
+            color: #ccd6f6;
+            padding: 3px 0;
+            line-height: 1.6;
+        }
+        .explain-box .step .num {
+            color: #ffd700;
+            font-weight: 700;
+        }
+
+        .task-box {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 14px;
+            padding: 14px 16px;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+        }
+        .task-box .label {
+            font-size: 11px;
+            font-weight: 700;
+            color: #f43f5e;
+            margin-bottom: 4px;
+        }
+        .task-box .content {
+            font-size: 13px;
+            color: #ccd6f6;
+            line-height: 1.6;
+        }
+        .task-box .code-required {
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            color: #ffd700;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 4px 10px;
+            border-radius: 6px;
+            display: inline-block;
+            margin-top: 4px;
+        }
+
+        .ghost-editor {
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 14px;
+            padding: 14px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+        .ghost-editor .label {
+            font-size: 11px;
+            font-weight: 600;
+            color: #94a3b8;
+            margin-bottom: 6px;
+            display: flex;
+            justify-content: space-between;
+        }
+        .ghost-box {
+            font-family: 'Courier New', monospace;
+            font-size: 16px;
+            line-height: 2;
+            min-height: 80px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            padding: 12px 14px;
+            white-space: pre-wrap;
+            word-break: break-all;
+            cursor: text;
+            outline: 2px solid transparent;
+            transition: outline 0.2s;
+            color: #4a5568;
+        }
+        .ghost-box:focus {
+            outline: 2px solid rgba(0, 229, 255, 0.25);
+        }
+        .ghost-box .ghost {
+            color: #4a5568;
+        }
+        .ghost-box .typed {
+            color: #10b981;
+        }
+        .ghost-box .typed.error {
+            color: #ef4444;
+            text-decoration: underline wavy #ef4444;
+        }
+        .ghost-box .cursor {
+            display: inline-block;
+            width: 2px;
+            height: 1.2em;
+            background: #00e5ff;
+            animation: blink 0.8s step-end infinite;
+            vertical-align: text-bottom;
+        }
+        @keyframes blink {
+            0%,
+            100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0;
+            }
+        }
+
+        .actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 10px;
+            flex-wrap: wrap;
+        }
+        .actions button {
+            padding: 6px 16px;
+            border: none;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            transition: 0.2s;
+        }
+        .actions .hint {
+            background: rgba(255, 215, 0, 0.1);
+            color: #ffd700;
+        }
+        .actions .hint:hover {
+            background: rgba(255, 215, 0, 0.2);
+        }
+        .actions .clear {
+            background: rgba(239, 68, 68, 0.1);
+            color: #ef4444;
+        }
+        .actions .clear:hover {
+            background: rgba(239, 68, 68, 0.2);
+        }
+        .actions .check {
+            background: linear-gradient(135deg, #00d4ff, #7b2ffc);
+            color: #0a0e1a;
+            margin-left: auto;
+        }
+        .actions .check:hover {
+            transform: scale(1.02);
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
+        }
+        .actions .check:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .preview-box {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 12px;
+            padding: 14px;
+            min-height: 80px;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #94a3b8;
+            font-size: 13px;
+        }
+        .preview-box .label {
+            font-size: 11px;
+            font-weight: 600;
+            color: #94a3b8;
+            margin-bottom: 6px;
+            width: 100%;
+        }
+        .preview-box .render {
+            width: 100%;
+            min-height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .preview-box .render iframe {
+            width: 100%;
+            min-height: 50px;
+            border: none;
+            background: transparent;
+        }
+
+        .checklist-box {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 12px;
+            padding: 12px 16px;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+        }
+        .checklist-box .label {
+            font-size: 11px;
+            font-weight: 700;
+            color: #94a3b8;
+            margin-bottom: 4px;
+        }
+        .checklist-box .item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 2px 0;
+            font-size: 13px;
+            color: #94a3b8;
+        }
+        .checklist-box .item.done {
+            color: #10b981;
+        }
+        .checklist-box .item .check {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            border: 2px solid #2a314a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            transition: 0.2s;
+            flex-shrink: 0;
+        }
+        .checklist-box .item.done .check {
+            border-color: #10b981;
+            background: #10b981;
+            color: #0a0e1a;
+        }
+
+        .map-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(48px, 1fr));
+            gap: 6px;
+            margin-top: 10px;
+        }
+        .map-node {
+            aspect-ratio: 1/1;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: 600;
+            color: #94a3b8;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .map-node.unlocked {
+            border-color: rgba(0, 229, 255, 0.3);
+            color: #00e5ff;
+        }
+        .map-node.completed {
+            border-color: #10b981;
+            color: #10b981;
+            background: rgba(16, 185, 129, 0.05);
+        }
+        .map-node.current {
+            border-color: #ffd700;
+            color: #ffd700;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.15);
+        }
+        .map-node.locked {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #1c1c1e;
+            color: #fff;
+            padding: 12px 24px;
+            border-radius: 14px;
+            font-size: 14px;
+            font-weight: 500;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+            z-index: 999;
+            max-width: 90%;
+            text-align: center;
+            font-family: 'Inter', sans-serif;
+            transition: 0.3s;
+            opacity: 0;
+            pointer-events: none;
+        }
+        .toast.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        @media (max-width: 600px) {
+            header {
+                padding: 8px 14px;
+            }
+            .logo {
+                font-size: 1rem;
+            }
+            .hero h1 {
+                font-size: 22px;
+            }
+            .hero .desc {
+                font-size: 13px;
+            }
+            .realms-grid {
+                grid-template-columns: 1fr;
+            }
+            .features {
+                grid-template-columns: 1fr;
+            }
+            .xp-display {
+                font-size: 10px;
+                padding: 2px 10px;
+            }
+            .level-badge {
+                font-size: 10px;
+            }
+            .ghost-box {
+                font-size: 14px;
+                padding: 10px 12px;
+            }
+            .map-grid {
+                grid-template-columns: repeat(auto-fill, minmax(38px, 1fr));
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NỀN VŨ TRỤ -->
+    <div id="universe"></div>
+    <div class="nebula nebula-1"></div>
+    <div class="nebula nebula-2"></div>
+
+    <!-- HEADER -->
+    <header>
+        <div class="logo">ThanhHai <span>// 4 REALMS</span></div>
+        <div class="header-right">
+            <div class="xp-display"><i class="fas fa-star"></i> XP<span id="xpDisplay">0</span>🔥 <span id="xpTotal">0</span>/220</div>
+            <div class="level-badge">LEVEL <span id="levelDisplay">1</span> · TÂN BINH</div>
+        </div>
+    </header>
+
+    <!-- HERO -->
+    <section class="hero">
+        <div class="sub-top">Học qua nhiệm vụ · Tiến bộ qua thực hành</div>
+        <h1>Bốn ngôn ngữ.<br />Một vũ trụ.</h1>
+        <p class="desc">Chọn realm, gõ code theo tín hiệu ghost và xây dự án game của riêng bạn. Toàn bộ tiến độ được lưu ngay trên thiết bị.</p>
+        <button class="btn-path" onclick="document.getElementById('realmsSection').scrollIntoView({behavior:'smooth'})">Chọn lộ trình →</button>
+    </section>
+
+    <!-- REALMS -->
+    <div id="realmsSection">
+        <div class="section-title">Realm đang chờ</div>
+        <div style="font-size:13px;color:#94a3b8;margin-bottom:14px;">Mỗi realm có 55 bài từ nền tảng đến hệ thống hoàn chỉnh, sau đó là một bài tập lớn.</div>
+
+        <div class="realms-grid" id="realmsContainer">
+            <div class="realm-card" data-realm="html">
+                <div class="top">
+                    <span class="icon"><i class="fab fa-html5" style="color:#e34c26;"></i></span>
+                    <span class="level-tag">LEVEL 1</span>
+                </div>
+                <div class="name">HTML Realm</div>
+                <div class="desc">Game UI Builder — Xây giao diện game, cửa hàng, menu và HUD bằng cấu trúc web rõ ràng.</div>
+                <div class="progress-text">Tiến độ <span id="htmlCount">0</span>/55</div>
+                <div class="bar"><div class="fill" id="htmlFill" style="width:0%;"></div></div>
+                <button class="btn-enter" onclick="openRealm('html')">VÀO HỌC →</button>
+            </div>
+
+            <div class="realm-card" data-realm="python">
+                <div class="top">
+                    <span class="icon"><i class="fab fa-python" style="color:#3776ab;"></i></span>
+                    <span class="level-tag">LEVEL 1</span>
+                </div>
+                <div class="name">Python Realm</div>
+                <div class="desc">Logic Core — Lập trình logic game, dữ liệu nhân vật và trí tuệ nhân tạo cơ bản.</div>
+                <div class="progress-text">Tiến độ <span id="pythonCount">0</span>/55</div>
+                <div class="bar"><div class="fill" id="pythonFill" style="width:0%;"></div></div>
+                <button class="btn-enter" onclick="openRealm('python')">VÀO HỌC →</button>
+            </div>
+
+            <div class="realm-card" data-realm="lua">
+                <div class="top">
+                    <span class="icon"><i class="fas fa-moon" style="color:#00a2ff;"></i></span>
+                    <span class="level-tag">LEVEL 1</span>
+                </div>
+                <div class="name">Lua Realm</div>
+                <div class="desc">Roblox Script — Viết script Roblox, chuyển động, ánh sáng và hiệu ứng không gian.</div>
+                <div class="progress-text">Tiến độ <span id="luaCount">0</span>/55</div>
+                <div class="bar"><div class="fill" id="luaFill" style="width:0%;"></div></div>
+                <button class="btn-enter" onclick="openRealm('lua')">VÀO HỌC →</button>
+            </div>
+
+            <div class="realm-card" data-realm="cpp">
+                <div class="top">
+                    <span class="icon"><i class="fas fa-code" style="color:#00a2ff;"></i></span>
+                    <span class="level-tag">LEVEL 1</span>
+                </div>
+                <div class="name">C++ Realm</div>
+                <div class="desc">High Performance — Xây hệ thống game hiệu năng cao, ví tiền và luồng mua bán trong shop.</div>
+                <div class="progress-text">Tiến độ <span id="cppCount">0</span>/55</div>
+                <div class="bar"><div class="fill" id="cppFill" style="width:0%;"></div></div>
+                <button class="btn-enter" onclick="openRealm('cpp')">VÀO HỌC →</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- FEATURES -->
+    <div class="features">
+        <div class="feature-item">
+            <div class="icon"><i class="fas fa-ghost"></i></div>
+            <div class="text">Ghost Typing — Gõ theo tín hiệu, sai báo đỏ, đúng mở khóa preview</div>
+        </div>
+        <div class="feature-item">
+            <div class="icon"><i class="fas fa-map"></i></div>
+            <div class="text">Map 55 nodes — Mở khóa tuần tự, luyện lại bài cũ bất cứ lúc nào</div>
+        </div>
+        <div class="feature-item">
+            <div class="icon"><i class="fas fa-database"></i></div>
+            <div class="text">Lưu tự động — Tiến độ lưu trong máy, không mất khi tắt trình duyệt</div>
+        </div>
+    </div>
+
+    <!-- ===== LESSON VIEW ===== -->
+    <div class="lesson-view" id="lessonView">
+        <div class="lesson-header">
+            <span class="back" onclick="closeLesson()"><i class="fas fa-arrow-left"></i> Quay lại</span>
+            <span class="title" id="lessonTitle">Bài 1: Thẻ H1 - Tiêu đề GAME START</span>
+            <span class="badge" id="lessonBadge">HTML • 1/55</span>
+        </div>
+
+        <div class="status-bar">
+            <div class="status-left">
+                <span>Hiện mở: <span class="on" id="statusText">BẬT</span></span>
+                <span class="match">Khớp: <span class="num" id="matchDisplay">0</span>%</span>
+            </div>
+            <div style="font-size:12px;color:#94a3b8;">
+                Bài <span id="currentLesson">1</span>/55 · <span id="langLabel">HTML</span>
+            </div>
+        </div>
+
+        <div class="lesson-content">
+            <div class="left-panel">
+                <div class="story-box">
+                    <div class="label">📖 CỘT TRUYỀN</div>
+                    <div class="content" id="storyContent">Bạn đang xây dựng giao diện cho thế giới ThanhHai. Bài 1 là mảnh ghép để tạo nên thẻ h1 - tiêu đề game start.</div>
+                </div>
+
+                <div class="explain-box">
+                    <div class="label">🔍 GIẢI THÍCH CHI TIẾT</div>
+                    <div class="step" id="explainSteps">
+                        <div><span class="num">①</span> Hiểu thẻ: <code>&lt;h1&gt;GAME START&lt;/h1&gt;</code> là cú pháp bạn cần.</div>
+                        <div><span class="num">②</span> Gõ theo ghost: Hệ thống hiện chữ mờ phía sau.</div>
+                        <div><span class="num">③</span> Kiểm tra: Live Preview hiện kết quả.</div>
+                        <div><span class="num">④</span> Hoàn thành: Bấm KIỂM TRA để nhận XP.</div>
+                    </div>
+                </div>
+
+                <div class="task-box">
+                    <div class="label">🎯 NHIỆM VỤ</div>
+                    <div class="content" id="taskContent">Tạo chính xác giao diện: Thẻ H1 - Tiêu đề GAME START</div>
+                    <div class="code-required" id="taskRequired">Yêu cầu phải chứa: <code>&lt;h1&gt;, &lt;/h1&gt;</code></div>
+                </div>
+
+                <div class="ghost-editor">
+                    <div class="label">
+                        <span><i class="fas fa-code"></i> <span id="langLabel2">HTML</span> Editor</span>
+                        <span id="matchDisplay2">0% khớp</span>
+                    </div>
+                    <div class="ghost-box" id="ghostBox" contenteditable="true" tabindex="0">
+                        <span id="ghostDisplay"></span><span class="cursor" id="cursor"></span>
+                    </div>
+                    <div class="actions">
+                        <button class="hint" onclick="showHint()"><i class="fas fa-lightbulb"></i> Gợi ý +10</button>
+                        <button class="clear" onclick="clearInput()"><i class="fas fa-undo"></i> Xóa</button>
+                        <button class="check" id="checkBtn" onclick="checkLesson()">KIỂM TRA</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="right-panel">
+                <div class="preview-box">
+                    <div class="label">👁️ KẾT QUẢ MONG ĐỢI — Live Preview</div>
+                    <div class="render" id="previewRender">
+                        <span style="color:#94a3b8;">Gõ code để xem preview...</span>
+                    </div>
+                </div>
+
+                <div class="checklist-box">
+                    <div class="label">✅ CHECKLIST</div>
+                    <div class="item" id="check1"><span class="check"><i class="fas fa-check"></i></span> Chứa "<span id="check1Text">&lt;h1&gt;</span>"</div>
+                    <div class="item" id="check2"><span class="check"><i class="fas fa-check"></i></span> Chứa "<span id="check2Text">&lt;/h1&gt;</span>"</div>
+                    <div class="item" id="check3"><span class="check"><i class="fas fa-check"></i></span> Độ chính xác ≥90% (<span id="accuracyDisplay">0</span>%)</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- MAP -->
+        <div style="margin-top:14px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:8px;">
+                <span style="font-size:12px;font-weight:600;"><i class="fas fa-map"></i> MAP 55 NODES</span>
+                <span style="font-size:11px;color:#94a3b8;">Mở khóa tuần tự</span>
+            </div>
+            <div class="map-grid" id="mapGrid"></div>
+        </div>
+    </div>
+
+    <div class="toast" id="toast"></div>
+
+    <script>
+        // =============================================
+        // 1. SAO + MƯA SAO BĂNG
+        // =============================================
+        (function createStars() {
+            const container = document.getElementById('universe');
+            for (let i = 0; i < 120; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                const size = Math.random() * 2 + 1;
+                star.style.width = size + 'px';
+                star.style.height = size + 'px';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.setProperty('--d', (Math.random() * 3 + 2) + 's');
+                container.appendChild(star);
+            }
+        })();
+
+        (function createShootingStars() {
+            const container = document.getElementById('universe');
+            for (let i = 0; i < 6; i++) {
+                const star = document.createElement('div');
+                star.className = 'shooting-star';
+                star.style.setProperty('--x', Math.random() * 100 + '%');
+                star.style.setProperty('--y', Math.random() * -20 + 'px');
+                star.style.setProperty('--s', (Math.random() * 3 + 3) + 's');
+                star.style.animationDelay = (i * 1.2) + 's';
+                container.appendChild(star);
+            }
+        })();
+
+        // =============================================
+        // 2. DỮ LIỆU BÀI HỌC (5 bài mẫu - đủ để test)
+        // =============================================
+        const LESSONS_DATA = {
+            html: [
+                { id: 1, title: 'Thẻ H1 - Tiêu đề GAME START', story: 'Bạn đang xây dựng giao diện cho thế giới ThanhHai. Bài 1 là mảnh ghép để tạo nên thẻ h1 - tiêu đề game start.',
+                    steps: ['Hiểu thẻ: <code>&lt;h1&gt;GAME START&lt;/h1&gt;</code> là cú pháp bạn cần.',
+                        'Gõ theo ghost: Hệ thống hiện chữ mờ phía sau.', 'Kiểm tra: Live Preview hiện kết quả.',
+                        'Hoàn thành: Bấm KIỂM TRA để nhận XP.'
+                    ], task: 'Tạo chính xác giao diện: Thẻ H1 - Tiêu đề GAME START',
+                    required: 'Yêu cầu phải chứa: <code>&lt;h1&gt;, &lt;/h1&gt;</code>', code: '<h1>GAME START</h1>',
+                    check: ['<h1>', '</h1>'] },
+                { id: 2, title: 'CSS Color - Màu chữ neon', story: 'Màu sắc làm game sinh động. Học cách đổi màu chữ bằng CSS.',
+                    steps: ['Hiểu thuộc tính color.', 'Thêm style="color: #ff0080;" vào thẻ h1.',
+                        'Xem preview màu hồng neon.'
+                    ], task: 'Tạo thẻ h1 với màu hồng neon',
+                    required: 'Yêu cầu phải chứa: <code>style="color: #ff0080;"</code>',
+                    code: '<h1 style="color: #ff0080;">GAME START</h1>', check: ['style="color: #ff0080;"', '</h1>'] },
+                { id: 3, title: 'CSS Background - Nền gradient', story: 'Nền gradient tạo hiệu ứng chuyển màu đẹp mắt.',
+                    steps: ['Hiểu thuộc tính background.', 'Thêm linear-gradient với 2 màu.',
+                        'Xem preview nền chuyển màu.'
+                    ], task: 'Tạo thẻ div với nền gradient',
+                    required: 'Yêu cầu phải chứa: <code>background:, linear-gradient</code>',
+                    code: '<div style="background: linear-gradient(45deg, #ff0080, #7b2ffc);">HELLO</div>',
+                    check: ['background:', 'linear-gradient'] },
+                { id: 4, title: 'HTML Button - Nút bấm', story: 'Nút bấm là yếu tố quan trọng trong game.',
+                    steps: ['Hiểu thẻ button.', 'Thêm text vào giữa.', 'Xem preview nút bấm.'],
+                    task: 'Tạo nút bấm với chữ "CLICK ME"',
+                    required: 'Yêu cầu phải chứa: <code>&lt;button&gt;, &lt;/button&gt;</code>',
+                    code: '<button style="padding:12px 24px;background:#00d4ff;border:none;border-radius:8px;color:#fff;font-weight:700;">CLICK ME</button>',
+                    check: ['<button', '</button>'] },
+                { id: 5, title: 'CSS Flexbox - Bố cục linh hoạt', story: 'Flexbox giúp sắp xếp bố cục game.',
+                    steps: ['Hiểu display:flex.', 'Thêm gap để tạo khoảng cách.', 'Xem preview các phần tử nằm ngang.'],
+                    task: 'Tạo bố cục flex với 2 phần tử',
+                    required: 'Yêu cầu phải chứa: <code>display:flex</code>',
+                    code: '<div style="display:flex;gap:16px;justify-content:center;"><div>Box 1</div><div>Box 2</div></div>',
+                    check: ['display:flex', 'gap:'] },
+            ],
+            python: [
+                { id: 1, title: 'Python Cơ Bản - Hello World', story: 'Bắt đầu với câu lệnh in ra màn hình.',
+                    steps: ['Hiểu hàm print().', 'Gõ print("Hello World")', 'Xem kết quả.'],
+                    task: 'In ra "Hello World"', required: 'Yêu cầu phải chứa: <code>print, Hello World</code>',
+                    code: 'print("Hello World")', check: ['print', 'Hello World'] },
+            ],
+            lua: [
+                { id: 1, title: 'Lua Cơ Bản - Hello Roblox', story: 'Lua là ngôn ngữ của Roblox.',
+                    steps: ['Hiểu hàm print() trong Lua.', 'Gõ print("Hello Roblox")', 'Xem kết quả.'],
+                    task: 'In ra "Hello Roblox"',
+                    required: 'Yêu cầu phải chứa: <code>print, Hello Roblox</code>',
+                    code: 'print("Hello Roblox")', check: ['print', 'Hello Roblox'] },
+            ],
+            cpp: [
+                { id: 1, title: 'C++ Cơ Bản - Hello World', story: 'C++ là ngôn ngữ mạnh mẽ. Bắt đầu với cout.',
+                    steps: ['Hiểu #include <iostream>', 'Sử dụng cout << "Hello World"', 'Xem kết quả.'],
+                    task: 'In ra "Hello World" bằng cout',
+                    required: 'Yêu cầu phải chứa: <code>#include <iostream>, cout</code>',
+                    code: '#include <iostream>\nusing namespace std;\nint main() {\n    cout << "Hello World";\n    return 0;\n}',
+                    check: ['#include <iostream>', 'cout'] },
+            ]
+        };
+
+        // =============================================
+        // 3. STATE
+        // =============================================
+        let state = {
+            xp: 0,
+            level: 1,
+            completed: { html: 0, python: 0, lua: 0, cpp: 0 },
+            currentRealm: 'html',
+            currentLessonIndex: 0
+        };
+
+        let typedChars = '';
+        let targetCode = '';
+        let isCompleted = false;
+
+        // =============================================
+        // 4. DOM
+        // =============================================
+        const ghostBox = document.getElementById('ghostBox');
+        const ghostDisplay = document.getElementById('ghostDisplay');
+        const cursor = document.getElementById('cursor');
+        const previewRender = document.getElementById('previewRender');
+        const matchDisplay = document.getElementById('matchDisplay');
+        const matchDisplay2 = document.getElementById('matchDisplay2');
+        const checkBtn = document.getElementById('checkBtn');
+        const lessonTitle = document.getElementById('lessonTitle');
+        const lessonBadge = document.getElementById('lessonBadge');
+        const langLabel = document.getElementById('langLabel');
+        const langLabel2 = document.getElementById('langLabel2');
+        const currentLesson = document.getElementById('currentLesson');
+        const storyContent = document.getElementById('storyContent');
+        const explainSteps = document.getElementById('explainSteps');
+        const taskContent = document.getElementById('taskContent');
+        const taskRequired = document.getElementById('taskRequired');
+        const check1 = document.getElementById('check1');
+        const check2 = document.getElementById('check2');
+        const check3 = document.getElementById('check3');
+        const check1Text = document.getElementById('check1Text');
+        const check2Text = document.getElementById('check2Text');
+        const accuracyDisplay = document.getElementById('accuracyDisplay');
+
+        // =============================================
+        // 5. LOAD / SAVE
+        // =============================================
+        function loadState() {
+            try {
+                const raw = localStorage.getItem('thanhhai_lesson_state');
+                if (raw) {
+                    const saved = JSON.parse(raw);
+                    state = { ...state, ...saved };
+                }
+            } catch (e) {}
+            updateUI();
+        }
+
+        function saveState() {
+            try {
+                localStorage.setItem('thanhhai_lesson_state', JSON.stringify(state));
+            } catch (e) {}
+            updateUI();
+        }
+
+        function updateUI() {
+            const total = state.completed.html + state.completed.python + state.completed.lua + state.completed.cpp;
+            document.getElementById('xpDisplay').textContent = state.xp;
+            document.getElementById('xpTotal').textContent = state.xp;
+            document.getElementById('levelDisplay').textContent = state.level;
+
+            for (const key of ['html', 'python', 'lua', 'cpp']) {
+                const count = state.completed[key] || 0;
+                document.getElementById(key + 'Count').textContent = count;
+                const pct = Math.min(100, Math.round((count / 55) * 100));
+                document.getElementById(key + 'Fill').style.width = pct + '%';
+            }
+        }
+
+        // =============================================
+        // 6. OPEN / CLOSE REALM
+        // =============================================
+        function openRealm(realm) {
+            state.currentRealm = realm;
+            state.currentLessonIndex = state.completed[realm] || 0;
+            if (state.currentLessonIndex >= LESSONS_DATA[realm].length) {
+                state.currentLessonIndex = LESSONS_DATA[realm].length - 1;
+            }
+            document.getElementById('realmsSection').style.display = 'none';
+            document.getElementById('lessonView').classList.add('active');
+            loadLesson(state.currentRealm, state.currentLessonIndex);
+        }
+
+        function closeLesson() {
+            document.getElementById('realmsSection').style.display = 'block';
+            document.getElementById('lessonView').classList.remove('active');
+            saveState();
+            updateUI();
+        }
+
+        // =============================================
+        // 7. LOAD LESSON
+        // =============================================
+        function loadLesson(realm, index) {
+            const lessons = LESSONS_DATA[realm];
+            if (!lessons || index >= lessons.length) return;
+            const lesson = lessons[index];
+            if (!lesson) return;
+
+            targetCode = lesson.code;
+            typedChars = '';
+            isCompleted = false;
+
+            document.getElementById('lessonTitle').textContent = 'Bài ' + (index + 1) + ': ' + lesson.title;
+            document.getElementById('lessonBadge').textContent = realm.toUpperCase() + ' • ' + (index + 1) + '/55';
+            document.getElementById('langLabel').textContent = realm.toUpperCase();
+            document.getElementById('langLabel2').textContent = realm.toUpperCase();
+            document.getElementById('currentLesson').textContent = index + 1;
+            storyContent.textContent = lesson.story;
+            explainSteps.innerHTML = lesson.steps.map((s, i) =>
+                '<div><span class="num">' + String.fromCharCode(9312 + i) + '</span> ' + s + '</div>'
+            ).join('');
+            taskContent.textContent = lesson.task;
+            taskRequired.innerHTML = lesson.required;
+            check1Text.textContent = lesson.check[0];
+            check2Text.textContent = lesson.check[1] || '';
+            check1.classList.remove('done');
+            check2.classList.remove('done');
+            check3.classList.remove('done');
+            checkBtn.disabled = true;
+            matchDisplay.textContent = '0%';
+            matchDisplay2.textContent = '0% khớp';
+            accuracyDisplay.textContent = '0';
+
+            ghostBox.innerText = '';
+            renderGhost();
+            ghostBox.focus();
+            renderMap(realm);
+        }
+
+        // =============================================
+        // 8. GHOST TYPING
+        // =============================================
+        function renderGhost() {
+            let html = '';
+            const typedLen = typedChars.length;
+            const targetLen = targetCode.length;
+
+            for (let i = 0; i < targetLen; i++) {
+                if (i < typedLen) {
+                    const char = typedChars[i];
+                    const target = targetCode[i];
+                    if (char === target) {
+                        html += '<span class="typed">' + escapeHtml(char) + '</span>';
+                    } else {
+                        html += '<span class="typed error">' + escapeHtml(char) + '</span>';
+                    }
+                } else {
+                    html += '<span class="ghost">' + escapeHtml(targetCode[i]) + '</span>';
+                }
+            }
+            ghostDisplay.innerHTML = html;
+            cursor.style.display = (typedLen < targetLen) ? 'inline-block' : 'none';
+
+            const acc = typedLen > 0 ? getAccuracy() : 0;
+            const accDisplay = Math.round(acc);
+            matchDisplay.textContent = accDisplay + '%';
+            matchDisplay2.textContent = accDisplay + '% khớp';
+            accuracyDisplay.textContent = accDisplay;
+            updateChecklist();
+            updatePreview();
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        function getAccuracy() {
+            if (typedChars.length === 0) return 0;
+            let correct = 0;
+            const len = Math.min(typedChars.length, targetCode.length);
+            for (let i = 0; i < len; i++) {
+                if (typedChars[i] === targetCode[i]) correct++;
+            }
+            return (correct / typedChars.length) * 100;
+        }
+
+        // =============================================
+        // 9. PREVIEW
+        // =============================================
+        function updatePreview() {
+            const code = typedChars || targetCode;
+            try {
+                if (state.currentRealm === 'html') {
+                    previewRender.innerHTML = '<iframe srcdoc="' + encodeURIComponent(code) +
+                        '" style="width:100%;min-height:50px;border:none;"></iframe>';
+                } else {
+                    previewRender.innerHTML = '<div style="color:#ccd6f6;font-family:monospace;white-space:pre-wrap;text-align:left;font-size:13px;">' +
+                        escapeHtml(code) + '</div>';
+                }
+            } catch (e) {
+                previewRender.innerHTML = '<span style="color:#ef4444;">Lỗi preview</span>';
+            }
+        }
+
+        // =============================================
+        // 10. CHECKLIST
+        // =============================================
+        function updateChecklist() {
+            const lessons = LESSONS_DATA[state.currentRealm];
+            if (!lessons || state.currentLessonIndex >= lessons.length) return;
+            const lesson = lessons[state.currentLessonIndex];
+            if (!lesson) return;
+
+            const c1 = typedChars.includes(lesson.check[0]);
+            const c2 = lesson.check[1] ? typedChars.includes(lesson.check[1]) : true;
+            const c3 = getAccuracy() >= 90;
+
+            check1.classList.toggle('done', c1);
+            check2.classList.toggle('done', c2);
+            check3.classList.toggle('done', c3);
+
+            if (c1 && c2 && c3) {
+                checkBtn.disabled = false;
+            } else {
+                checkBtn.disabled = true;
+            }
+        }
+
+        // =============================================
+        // 11. INPUT EVENTS
+        // =============================================
+        ghostBox.addEventListener('input', function(e) {
+            if (isCompleted) return;
+            const text = this.innerText;
+            let raw = text.replace(/[\n\r]/g, '\n');
+            if (raw.length > targetCode.length) {
+                raw = raw.slice(0, targetCode.length);
+            }
+            typedChars = raw;
+
+            const range = document.createRange();
+            const sel = window.getSelection();
+            if (this.childNodes.length > 0) {
+                const last = this.childNodes[this.childNodes.length - 1];
+                if (last.nodeType === 3) {
+                    range.setStart(last, last.textContent.length);
+                } else {
+                    range.setStart(this, this.childNodes.length);
+                }
+                range.collapse(true);
+                sel.removeAllRanges();
+                sel.addRange(range);
+            }
+            renderGhost();
+            if (typedChars === targetCode) {
+                isCompleted = true;
+                checkBtn.disabled = false;
+                showToast('✅ Hoàn thành! Bấm KIỂM TRA để nhận XP.', 1500);
+            }
+        });
+
+        ghostBox.addEventListener('paste', function(e) {
+            e.preventDefault();
+            showToast('❌ Không được paste! Hãy gõ thủ công.', 1500);
+        });
+
+        ghostBox.addEventListener('click', function() { this.focus(); });
+
+        // =============================================
+        // 12. ACTIONS
+        // =============================================
+        function checkLesson() {
+            const lessons = LESSONS_DATA[state.currentRealm];
+            if (!lessons || state.currentLessonIndex >= lessons.length) return;
+            const lesson = lessons[state.currentLessonIndex];
+            if (!lesson) return;
+
+            const c1 = typedChars.includes(lesson.check[0]);
+            const c2 = lesson.check[1] ? typedChars.includes(lesson.check[1]) : true;
+            const acc = getAccuracy();
+
+            if (c1 && c2 && acc >= 90) {
+                if (state.completed[state.currentRealm] <= state.currentLessonIndex) {
+                    state.xp += 50;
+                    state.completed[state.currentRealm]++;
+                    state.level = Math.floor(state.xp / 220) + 1;
+                }
+                checkBtn.disabled = true;
+                saveState();
+                updateUI();
+                showToast('🎉 Hoàn thành! +50 XP', 1500);
+
+                if (state.currentLessonIndex < lessons.length - 1) {
+                    setTimeout(() => {
+                        state.currentLessonIndex++;
+                        loadLesson(state.currentRealm, state.currentLessonIndex);
+                    }, 800);
+                } else {
+                    showToast('🏆 Bạn đã hoàn thành tất cả bài học trong realm này!', 3000);
+                }
+            } else {
+                showToast('❌ Chưa đạt yêu cầu. Kiểm tra lại code.', 1500);
+            }
+        }
+
+        function showHint() {
+            const lessons = LESSONS_DATA[state.currentRealm];
+            if (!lessons || state.currentLessonIndex >= lessons.length) return;
+            const lesson = lessons[state.currentLessonIndex];
+            if (!lesson) return;
+            showToast('💡 Gợi ý: ' + lesson.code.substring(0, 30) + '...', 2500);
+            state.xp += 10;
+            saveState();
+            updateUI();
+        }
+
+        function clearInput() {
+            typedChars = '';
+            ghostBox.innerText = '';
+            renderGhost();
+            showToast('🔄 Đã xóa, gõ lại.', 1500);
+            ghostBox.focus();
+        }
+
+        function autoType() {
+            if (typedChars.length < targetCode.length) {
+                typedChars += targetCode[typedChars.length];
+                ghostBox.innerText = typedChars;
+                renderGhost();
+                ghostBox.focus();
+                const range = document.createRange();
+                const sel = window.getSelection();
+                range.setStart(ghostBox.childNodes[0] || ghostBox, typedChars.length);
+                range.collapse(true);
+                sel.removeAllRanges();
+                sel.addRange(range);
+            }
+        }
+
+        // =============================================
+        // 13. MAP
+        // =============================================
+        function renderMap(realm) {
+            const lessons = LESSONS_DATA[realm];
+            const grid = document.getElementById('mapGrid');
+            grid.innerHTML = '';
+            const completed = state.completed[realm] || 0;
+            const total = lessons.length;
+
+            for (let i = 0; i < total; i++) {
+                const node = document.createElement('div');
+                node.className = 'map-node';
+                if (i < completed) {
+                    node.classList.add('completed');
+                    node.textContent = '✓';
+                } else if (i <= completed) {
+                    node.classList.add('unlocked');
+                    if (i === completed) node.classList.add('current');
+                    node.textContent = i + 1;
+                } else {
+                    node.classList.add('locked');
+                    node.textContent = '🔒';
+                }
+                node.onclick = function() {
+                    if (i <= completed) {
+                        state.currentLessonIndex = i;
+                        loadLesson(realm, i);
+                    } else {
+                        showToast('🔒 Bài chưa mở khóa!', 1500);
+                    }
+                };
+                grid.appendChild(node);
+            }
+        }
+
+        // =============================================
+        // 14. TOAST
+        // =============================================
+        function showToast(msg, duration) {
+            duration = duration || 2500;
+            const el = document.getElementById('toast');
+            el.textContent = msg;
+            el.classList.add('show');
+            clearTimeout(el._timer);
+            el._timer = setTimeout(() => el.classList.remove('show'), duration);
+        }
+
+        // =============================================
+        // 15. KHỞI TẠO
+        // =============================================
+        loadState();
+    </script>
+
+</body>
+</html>
